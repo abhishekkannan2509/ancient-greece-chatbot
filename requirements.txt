@@ -1,5 +1,5 @@
 flask==3.0.0
-llama-index==0.10.0
+llama-index==0.13.0
 sentence-transformers==2.2.2
 faiss-cpu==1.7.4
 python-dotenv==1.0.0
