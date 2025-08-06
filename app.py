@@ -11,7 +11,7 @@ import faiss
 load_dotenv()
 
 # === Configuration ===
-DATA_DIR = "C:/Users/Admin/ancient_greece_chatbot/data/ancient_greece_data"
+DATA_DIR = "data/ancient_greece_data"
 EMBED_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 EMBED_DIM = 384
 SIMILARITY_THRESHOLD = 0.5  # Lowered to allow slightly looser matches
@@ -94,4 +94,5 @@ def ask():
 
 # === Run the Flask server ===
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
