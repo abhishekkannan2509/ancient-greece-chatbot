@@ -2,10 +2,9 @@ from flask import Flask, render_template, request, jsonify
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
 from llama_index.core.settings import Settings
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.vector_stores.faiss import FaissVectorStore
+from llama_index.vector_stores.simple import SimpleVectorStore
 from dotenv import load_dotenv
 import os
-import faiss
 
 # === Load environment variables ===
 load_dotenv()
@@ -13,7 +12,6 @@ load_dotenv()
 # === Configuration ===
 DATA_DIR = "data/ancient_greece_data"
 EMBED_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-EMBED_DIM = 384
 SIMILARITY_THRESHOLD = 0.5  # Lowered to allow slightly looser matches
 
 # === Check data directory exists ===
@@ -27,9 +25,8 @@ documents = SimpleDirectoryReader(DATA_DIR).load_data()
 embed_model = HuggingFaceEmbedding(model_name=EMBED_MODEL_NAME)
 Settings.embed_model = embed_model
 
-# === Create FAISS vector index ===
-faiss_index = faiss.IndexFlatL2(EMBED_DIM)
-vector_store = FaissVectorStore(faiss_index=faiss_index)
+# === Create simple vector store ===
+vector_store = SimpleVectorStore()
 
 # === Build the index and create query engine ===
 index = VectorStoreIndex.from_documents(documents, vector_store=vector_store)
