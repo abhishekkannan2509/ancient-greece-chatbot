@@ -1,0 +1,4 @@
+flask
+llama-index
+sentence-transformers
+pinecone-client

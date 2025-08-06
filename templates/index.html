@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ancient Greece QA Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ✅ Bootstrap CSS for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- ✅ Custom CSS (optional dark/light mode, chat style) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode"><!-- ✅ Default mode is light -->
+
+    <div class="container mt-5">
+        <!-- ✅ Header: Title + Toggle Dark Mode -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-primary">🧠 Ancient Greece QA Bot</h1>
+            <button class="btn btn-outline-secondary" onclick="toggleDarkMode()" id="toggle-btn">🌙 Dark Mode</button>
+        </div>
+
+        <!-- ✅ Input field and Ask button -->
+        <div class="input-group mb-3">
+            <input id="question" type="text" class="form-control" placeholder="Ask about Ancient Greece...">
+            <button class="btn btn-primary" onclick="ask()">Ask</button>
+        </div>
+
+        <!-- ✅ Response output -->
+        <div id="response" class="response-container p-3 border rounded mb-3"></div>
+
+        <!-- ✅ Chat History section -->
+        <h4 class="mt-4">🕰️ Chat History</h4>
+        <div id="chat-history" class="chat-history-container border p-3 rounded overflow-auto" style="max-height: 300px;"></div>
+    </div>
+
+    <!-- ✅ Bootstrap JS bundle for components -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ✅ Store chat history in memory
+        const chatHistory = [];
+
+        // ✅ Function to ask a question and get an answer from backend
+        async function ask() {
+            const input = document.getElementById('question');
+            const question = input.value.trim();
+            if (!question) return; // ⛔ Don’t send empty questions
+
+            // ✅ Send the question to backend via POST
+            const res = await fetch('/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question })
+            });
+
+            const data = await res.json(); // ✅ Get the JSON response
+
+            // ✅ Display the answer and sources in main response area
+            const responseEl = document.getElementById('response');
+            const answerHTML = `
+                <p><strong>Answer:</strong> ${data.answer}</p>
+                <p><strong>Sources:</strong> ${data.sources.join(', ')}</p>
+            `;
+            responseEl.innerHTML = answerHTML;
+
+            // ✅ Add to chat history and render
+            chatHistory.unshift({ question, answer: data.answer, sources: data.sources });
+            const historyEl = document.getElementById('chat-history');
+            historyEl.innerHTML = chatHistory.map(item => `
+                <div class="mb-2">
+                    <p><strong>Q:</strong> ${item.question}</p>
+                    <p><strong>A:</strong> ${item.answer}</p>
+                    <hr/>
+                </div>
+            `).join('');
+
+            input.value = ''; // ✅ Clear input
+        }
+
+        // ✅ Toggle dark/light mode for the whole app
+        function toggleDarkMode() {
+            const body = document.body;
+            const toggleBtn = document.getElementById('toggle-btn');
+
+            const isDark = body.classList.contains('dark-mode');
+
+            if (isDark) {
+                // ✅ Switch to light mode
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                toggleBtn.innerHTML = '🌙 Dark Mode';
+            } else {
+                // ✅ Switch to dark mode
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                toggleBtn.innerHTML = '☀️ Light Mode';
+            }
+
+            // (Optional) Debugging log
+            console.log("Current body class:", body.className);
+        }
+    </script>
+</body>
+</html>

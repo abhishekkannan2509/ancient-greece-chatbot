@@ -1,0 +1,51 @@
+/* Light mode styles */
+body.light-mode {
+    background-color: #ffffff; /* White background for light mode */
+    color: #000000; /* Black text for good readability */
+}
+
+/* Light mode containers */
+body.light-mode .response-container,
+body.light-mode .chat-history-container {
+    background-color: #f8f9fa; /* Light gray background for response and history sections */
+    color: #000000; /* Black text */
+}
+
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #121212; /* Dark gray background for dark mode */
+    color: #ffffff; /* White text for contrast */
+}
+
+/* Dark mode containers */
+body.dark-mode .response-container,
+body.dark-mode .chat-history-container {
+    background-color: #1e1e1e; /* Slightly lighter dark background for visual separation */
+    color: #ffffff; /* White text */
+}
+
+/* Input field style in dark mode */
+body.dark-mode input.form-control {
+    background-color: #2c2c2c !important; /* Dark background for input fields */
+    color: #ffffff !important; /* White text inside the input */
+    border: 1px solid #444 !important; /* Subtle border for visibility */
+}
+
+/* Primary button style in dark mode */
+body.dark-mode .btn-primary {
+    background-color: #0d6efd; /* Bootstrap primary blue */
+    border-color: #0d6efd; /* Same border as background */
+}
+
+/* Outline secondary button (like dark mode toggle) in dark mode */
+body.dark-mode .btn-outline-secondary {
+    border-color: #ccc; /* Light border for contrast */
+    color: #ccc; /* Light text */
+}
+
+/* Hover effect for the dark mode toggle button */
+body.dark-mode .btn-outline-secondary:hover {
+    background-color: #444; /* Dark background on hover */
+    color: #fff; /* White text for better visibility */
+}
